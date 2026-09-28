@@ -43,6 +43,7 @@ export async function refreshAccessToken(): Promise<string | null> {
     body: new URLSearchParams({
       grant_type: 'refresh_token',
       client_id: process.env.APP_ID!,
+        client_secret: process.env.APP_SECRET ?? '',
       refresh_token: refreshToken,
     }),
   })
@@ -80,8 +81,15 @@ export async function currentUser(): Promise<UserInfo | null> {
 }
 
 async function accessLevel(userId: string, resourceId: string) {
-  const response = await fetch(`${process.env.WHOP_API_ORIGIN}/api/v1/users/${userId}/access/${resourceId}`)
-  if (!response.ok) return { has_access: false, access_level: 'no_access' as const }
+  const response = await fetch(`${process.env.WHOP_API_ORIGIN}/api/v1/users/${userId}/access/${resourceId}`, {
+    headers: { Authorization: `Bearer ${process.env.WHOP_API_KEY}` },
+  })
+  if (!response.ok) {
+    const t = await response.text()
+    console.error('[access] check failed', response.status, resourceId, t)
+    ;(globalThis as any).__accessFail = `${response.status} ${t.slice(0, 150)}`
+    return { has_access: false, access_level: 'no_access' as const }
+  }
   return (await response.json()) as { has_access: boolean; access_level: string }
 }
 
@@ -119,5 +127,5 @@ export async function requireAnyPurchase(productIds: string[], companyId?: strin
     return { ok: true, user } as const
   }
 
-  return { ok: false, reason: 'no_access' } as const
+  return { ok: false, reason: 'no_access', detail: (globalThis as any).__accessFail ?? 'none' } as const
 }

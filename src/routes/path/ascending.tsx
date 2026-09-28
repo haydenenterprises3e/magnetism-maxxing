@@ -2,9 +2,11 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 
 import { DeeperAccordion } from '../../components/DeeperAccordion'
+import { AscendingIntroCarousel } from '../../components/AscendingIntroCarousel'
+import { UpcomingCourses } from '../../components/UpcomingCourses'
 import { TrackAccordion } from '../../components/TrackAccordion'
 import { DEEPER_MODULE_COUNT, DEEPER_SECTIONS, deeperDoneCount } from '../../lib/deeperKnowledge'
-import { computeOverallRank, RANK_TITLES, TRACKS } from '../../lib/pathData'
+import { computeOverallRank, lessonKey, RANK_TITLES, TRACKS } from '../../lib/pathData'
 import { requireAnyPurchase } from '../../lib/session'
 import { getProgress } from '../../server/progress'
 
@@ -59,6 +61,13 @@ function AscendingPathPage() {
 
   // Rank is earned only by actually completing modules — never by any click-to-earn action.
   const { currentRank: rank, progressPct: overallProgressPct } = computeOverallRank(completed, hasAscending)
+
+  const totalCoreLessons = TRACKS.reduce((sum, t) => sum + t.lessons.length, 0)
+  const doneCoreLessons = TRACKS.reduce(
+    (sum, t) => sum + t.lessons.filter((l) => completed.has(lessonKey(t.slug, l.slug))).length,
+    0,
+  )
+  const communityUnlocked = totalCoreLessons > 0 && doneCoreLessons / totalCoreLessons >= 0.7
   const rankTitle = RANK_TITLES[rank] ?? 'INITIATE'
 
   return (
@@ -74,27 +83,9 @@ function AscendingPathPage() {
           </div>
         </nav>
 
-        <div className="welcome-panel">
-          <div className="welcome-eyebrow">SYSTEM MESSAGE — ASCENDING</div>
-          <div className="welcome-title">Welcome in. Trust the process.</div>
-          <p className="welcome-sub">
-            You've unlocked all 4 tracks plus every S-Rank module exclusive to Ascending. Complete every module in a
-            rank to unlock the next — E, then D, C, B, A, and finally S once every A-Rank module in that track is
-            done. Below the tracks: Deeper Knowledge, a 60-module library that unlocks at overall B, then A, then S.
-            Completing it does not change rank.
-          </p>
-          <div className="overall-bar-row">
-            <div className="bar-label">
-              <span>OVERALL PROGRESS</span>
-              <span>{overallProgressPct}%</span>
-            </div>
-            <div className="bar-track">
-              <div className="bar-fill" style={{ width: `${overallProgressPct}%` }} />
-            </div>
-          </div>
-        </div>
+        <AscendingIntroCarousel overallProgressPct={overallProgressPct} communityUnlocked={communityUnlocked} />
 
-        <div className="section-title">Your Tracks</div>
+          <div className="section-title">Your Tracks</div>
         <div className="section-sub">4 tracks, 30 modules each. Trust the process and work through them in order.</div>
 
         {TRACKS.map((track, i) => (
@@ -151,7 +142,9 @@ function AscendingPathPage() {
           />
         ))}
 
-        <div className="footer-note">
+        <UpcomingCourses />
+
+          <div className="footer-note">
           FOR EDUCATIONAL PURPOSES ONLY, NOT PROVEN, CONSPIRACIES ONLY,
           <br />
           COMMUNITY BRO-SCIENCE AND TEACHINGS

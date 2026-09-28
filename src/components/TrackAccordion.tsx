@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { isRankUnlocked, lessonKey, type TrackData } from '../lib/pathData'
 
@@ -13,20 +13,40 @@ export function TrackAccordion({
   index: number
   track: TrackData
   defaultOpen?: boolean
-  /** "starter" or "ascending" — lessons link to `/path/module/${planSlug}/${track.slug}/${lesson.slug}`. */
   planSlug: string
-  /** `${trackSlug}__${lessonSlug}` keys the visitor has completed. */
   completed: Set<string>
   hasAscending: boolean
 }) {
   const [open, setOpen] = useState(!!defaultOpen)
+  const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
   const num = String(index + 1).padStart(2, '0')
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.15 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const doneCount = track.lessons.filter((l) => completed.has(lessonKey(track.slug, l.slug))).length
   const progressPct = Math.round((doneCount / track.lessons.length) * 100)
 
   return (
-    <div className={`track-block${open ? ' open' : ''}`}>
+    <div
+      ref={ref}
+      className={`track-block reveal${visible ? ' visible' : ''}${open ? ' open' : ''}`}
+      style={{ transitionDelay: `${Math.min(index * 0.08, 0.4)}s` }}
+    >
       <div className="track-head" onClick={() => setOpen((o) => !o)}>
         <div className="track-head-left">
           <span className="track-num">{num}</span>

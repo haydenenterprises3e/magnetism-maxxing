@@ -1,6 +1,9 @@
 {
   "name": "ascend-awakening",
   "private": true,
+  "overrides": {
+    "miniflare": "4.20260710.0"
+  },
   "type": "module",
   "imports": {
     "#/*": "./src/*"
@@ -26,7 +29,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.26.0",
+    "@cloudflare/vite-plugin": "1.45.0",
     "@tanstack/devtools-vite": "latest",
     "@tanstack/router-cli": "^1.132.0",
     "@types/node": "^22.10.2",
@@ -35,7 +38,7 @@
     "@vitejs/plugin-react": "^6.0.1",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
-    "wrangler": "^4.70.0",
+    "wrangler": "4.111.0",
     "@whop/cli": "latest"
   },
   "pnpm": {

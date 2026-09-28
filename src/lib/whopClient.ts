@@ -10,7 +10,7 @@ let client: WhopClient | null = null
 export function serverWhop(): WhopClient {
   if (!client) {
     client = new WhopClient({
-      token: 'injected-at-edge',
+      token: process.env.WHOP_API_KEY ?? '',
       baseUrl: `${process.env.WHOP_API_ORIGIN ?? 'https://api.whop.com'}/api/v1`,
     })
   }

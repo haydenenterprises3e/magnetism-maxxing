@@ -10,17 +10,38 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DmcaRouteImport } from './routes/dmca'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PathAscendingRouteImport } from './routes/path/ascending'
 import { Route as PathStarterRouteImport } from './routes/path/starter'
 import { Route as ApiOauthCallbackRouteImport } from './routes/api/oauth/callback'
 import { Route as ApiOauthLoginRouteImport } from './routes/api/oauth/login'
 import { Route as ApiOauthLogoutRouteImport } from './routes/api/oauth/logout'
+import { Route as ApiWebhooksWhopRouteImport } from './routes/api/webhooks/whop'
+import { Route as PathCommunityIndexRouteImport } from './routes/path/community/index'
+import { Route as PathCommunityAdminRouteImport } from './routes/path/community/admin'
 import { Route as PathDeeperSectionLessonRouteImport } from './routes/path/deeper/$section/$lesson'
 import { Route as PathModulePlanTrackLessonRouteImport } from './routes/path/module/$plan/$track/$lesson'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DmcaRoute = DmcaRouteImport.update({
+  id: '/dmca',
+  path: '/dmca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PathAscendingRoute = PathAscendingRouteImport.update({
@@ -48,6 +69,21 @@ const ApiOauthLogoutRoute = ApiOauthLogoutRouteImport.update({
   path: '/api/oauth/logout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiWebhooksWhopRoute = ApiWebhooksWhopRouteImport.update({
+  id: '/api/webhooks/whop',
+  path: '/api/webhooks/whop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PathCommunityIndexRoute = PathCommunityIndexRouteImport.update({
+  id: '/path/community/',
+  path: '/path/community/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PathCommunityAdminRoute = PathCommunityAdminRouteImport.update({
+  id: '/path/community/admin',
+  path: '/path/community/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PathDeeperSectionLessonRoute = PathDeeperSectionLessonRouteImport.update({
   id: '/path/deeper/$section/$lesson',
   path: '/path/deeper/$section/$lesson',
@@ -62,32 +98,50 @@ const PathModulePlanTrackLessonRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dmca': typeof DmcaRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/path/ascending': typeof PathAscendingRoute
   '/path/starter': typeof PathStarterRoute
   '/api/oauth/callback': typeof ApiOauthCallbackRoute
   '/api/oauth/login': typeof ApiOauthLoginRoute
   '/api/oauth/logout': typeof ApiOauthLogoutRoute
+  '/api/webhooks/whop': typeof ApiWebhooksWhopRoute
+  '/path/community/admin': typeof PathCommunityAdminRoute
+  '/path/community/': typeof PathCommunityIndexRoute
   '/path/deeper/$section/$lesson': typeof PathDeeperSectionLessonRoute
   '/path/module/$plan/$track/$lesson': typeof PathModulePlanTrackLessonRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dmca': typeof DmcaRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/path/ascending': typeof PathAscendingRoute
   '/path/starter': typeof PathStarterRoute
   '/api/oauth/callback': typeof ApiOauthCallbackRoute
   '/api/oauth/login': typeof ApiOauthLoginRoute
   '/api/oauth/logout': typeof ApiOauthLogoutRoute
+  '/api/webhooks/whop': typeof ApiWebhooksWhopRoute
+  '/path/community/admin': typeof PathCommunityAdminRoute
+  '/path/community': typeof PathCommunityIndexRoute
   '/path/deeper/$section/$lesson': typeof PathDeeperSectionLessonRoute
   '/path/module/$plan/$track/$lesson': typeof PathModulePlanTrackLessonRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dmca': typeof DmcaRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/path/ascending': typeof PathAscendingRoute
   '/path/starter': typeof PathStarterRoute
   '/api/oauth/callback': typeof ApiOauthCallbackRoute
   '/api/oauth/login': typeof ApiOauthLoginRoute
   '/api/oauth/logout': typeof ApiOauthLogoutRoute
+  '/api/webhooks/whop': typeof ApiWebhooksWhopRoute
+  '/path/community/admin': typeof PathCommunityAdminRoute
+  '/path/community/': typeof PathCommunityIndexRoute
   '/path/deeper/$section/$lesson': typeof PathDeeperSectionLessonRoute
   '/path/module/$plan/$track/$lesson': typeof PathModulePlanTrackLessonRoute
 }
@@ -95,42 +149,66 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dmca'
+    | '/privacy'
+    | '/terms'
     | '/path/ascending'
     | '/path/starter'
     | '/api/oauth/callback'
     | '/api/oauth/login'
     | '/api/oauth/logout'
+    | '/api/webhooks/whop'
+    | '/path/community/admin'
+    | '/path/community/'
     | '/path/deeper/$section/$lesson'
     | '/path/module/$plan/$track/$lesson'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dmca'
+    | '/privacy'
+    | '/terms'
     | '/path/ascending'
     | '/path/starter'
     | '/api/oauth/callback'
     | '/api/oauth/login'
     | '/api/oauth/logout'
+    | '/api/webhooks/whop'
+    | '/path/community/admin'
+    | '/path/community'
     | '/path/deeper/$section/$lesson'
     | '/path/module/$plan/$track/$lesson'
   id:
     | '__root__'
     | '/'
+    | '/dmca'
+    | '/privacy'
+    | '/terms'
     | '/path/ascending'
     | '/path/starter'
     | '/api/oauth/callback'
     | '/api/oauth/login'
     | '/api/oauth/logout'
+    | '/api/webhooks/whop'
+    | '/path/community/admin'
+    | '/path/community/'
     | '/path/deeper/$section/$lesson'
     | '/path/module/$plan/$track/$lesson'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DmcaRoute: typeof DmcaRoute
+  PrivacyRoute: typeof PrivacyRoute
+  TermsRoute: typeof TermsRoute
   PathAscendingRoute: typeof PathAscendingRoute
   PathStarterRoute: typeof PathStarterRoute
   ApiOauthCallbackRoute: typeof ApiOauthCallbackRoute
   ApiOauthLoginRoute: typeof ApiOauthLoginRoute
   ApiOauthLogoutRoute: typeof ApiOauthLogoutRoute
+  ApiWebhooksWhopRoute: typeof ApiWebhooksWhopRoute
+  PathCommunityAdminRoute: typeof PathCommunityAdminRoute
+  PathCommunityIndexRoute: typeof PathCommunityIndexRoute
   PathDeeperSectionLessonRoute: typeof PathDeeperSectionLessonRoute
   PathModulePlanTrackLessonRoute: typeof PathModulePlanTrackLessonRoute
 }
@@ -142,6 +220,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dmca': {
+      id: '/dmca'
+      path: '/dmca'
+      fullPath: '/dmca'
+      preLoaderRoute: typeof DmcaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/path/ascending': {
@@ -179,6 +278,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiOauthLogoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/webhooks/whop': {
+      id: '/api/webhooks/whop'
+      path: '/api/webhooks/whop'
+      fullPath: '/api/webhooks/whop'
+      preLoaderRoute: typeof ApiWebhooksWhopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/path/community/': {
+      id: '/path/community/'
+      path: '/path/community'
+      fullPath: '/path/community/'
+      preLoaderRoute: typeof PathCommunityIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/path/community/admin': {
+      id: '/path/community/admin'
+      path: '/path/community/admin'
+      fullPath: '/path/community/admin'
+      preLoaderRoute: typeof PathCommunityAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/path/deeper/$section/$lesson': {
       id: '/path/deeper/$section/$lesson'
       path: '/path/deeper/$section/$lesson'
@@ -198,11 +318,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DmcaRoute: DmcaRoute,
+  PrivacyRoute: PrivacyRoute,
+  TermsRoute: TermsRoute,
   PathAscendingRoute: PathAscendingRoute,
   PathStarterRoute: PathStarterRoute,
   ApiOauthCallbackRoute: ApiOauthCallbackRoute,
   ApiOauthLoginRoute: ApiOauthLoginRoute,
   ApiOauthLogoutRoute: ApiOauthLogoutRoute,
+  ApiWebhooksWhopRoute: ApiWebhooksWhopRoute,
+  PathCommunityAdminRoute: PathCommunityAdminRoute,
+  PathCommunityIndexRoute: PathCommunityIndexRoute,
   PathDeeperSectionLessonRoute: PathDeeperSectionLessonRoute,
   PathModulePlanTrackLessonRoute: PathModulePlanTrackLessonRoute,
 }
@@ -211,10 +337,11 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

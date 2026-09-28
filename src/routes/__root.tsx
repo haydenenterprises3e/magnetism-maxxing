@@ -23,6 +23,23 @@ export const Route = createRootRoute({
         rel: 'stylesheet',
         href: appCss,
       },
+      { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+      { rel: 'icon', href: '/favicon-32.png', type: 'image/png', sizes: '32x32' },
+      { rel: 'apple-touch-icon', href: '/favicon-180.png' },
+    ],
+    scripts: [
+      {
+        src: 'https://www.googletagmanager.com/gtag/js?id=G-2K5VDJ93FQ',
+        async: true,
+      },
+      {
+        children: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-2K5VDJ93FQ');
+        `,
+      },
     ],
   }),
   shellComponent: RootDocument,

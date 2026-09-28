@@ -19,9 +19,17 @@ export const Route = createFileRoute('/api/oauth/callback')({
         }
 
         if (!code || !state || !verifier || state !== expectedState) {
+          console.error('[oauth] callback rejected', {
+            hasCode: !!code,
+            hasState: !!state,
+            hasVerifierCookie: !!verifier,
+            stateMatches: state === expectedState,
+            whopError: url.searchParams.get('error'),
+            whopErrorDescription: url.searchParams.get('error_description'),
+          })
           return new Response(null, {
             status: 302,
-            headers: { Location: '/?error=auth_failed' },
+            headers: { Location: '/?error=auth_failed&why=rejected' },
           })
         }
 
@@ -31,6 +39,7 @@ export const Route = createFileRoute('/api/oauth/callback')({
           body: new URLSearchParams({
             grant_type: 'authorization_code',
             client_id: process.env.APP_ID!,
+        client_secret: process.env.APP_SECRET ?? '',
             code,
             code_verifier: verifier,
             redirect_uri: `${url.origin}/api/oauth/callback`,
@@ -38,10 +47,11 @@ export const Route = createFileRoute('/api/oauth/callback')({
         })
 
         if (!response.ok) {
-          console.error('[oauth] token exchange failed', response.status, await response.text())
+          const errText = await response.text()
+          console.error('[oauth] token exchange failed', response.status, errText)
           return new Response(null, {
             status: 302,
-            headers: { Location: '/?error=auth_failed' },
+            headers: { Location: `/?error=auth_failed&why=token_${response.status}&detail=${encodeURIComponent(errText.slice(0, 200))}` },
           })
         }
 
