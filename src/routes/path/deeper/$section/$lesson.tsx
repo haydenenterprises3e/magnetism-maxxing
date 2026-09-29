@@ -85,6 +85,8 @@ function DeeperModulePage() {
         setIsUpdated(st === 'updated')
         window.whop?.track('module:completed', { track: `deeper-${section.slug}`, lesson: module.slug })
       }
+    } catch (err) {
+      window.alert('Could not save: ' + (err instanceof Error ? err.message : String(err)))
     } finally {
       setSaving(false)
     }

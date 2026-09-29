@@ -102,6 +102,8 @@ function ModulePage() {
         setIsUpdated(st === 'updated')
         window.whop?.track('module:completed', { track: track.slug, lesson: lesson.slug, rank: lesson.rank })
       }
+    } catch (err) {
+      window.alert('Could not save: ' + (err instanceof Error ? err.message : String(err)))
     } finally {
       setSaving(false)
     }

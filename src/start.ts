@@ -2,6 +2,11 @@ import { createStart, createCsrfMiddleware, createMiddleware } from '@tanstack/r
 
 const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === 'serverFn',
+  failureResponse: (ctx: any) => {
+    const h = ctx.request.headers
+    console.error('CSRF_BLOCK', 'fetchSite=' + h.get('Sec-Fetch-Site'), 'origin=' + h.get('Origin'), 'referer=' + h.get('Referer'), 'url=' + new URL(ctx.request.url).origin)
+    return new Response('Forbidden', { status: 403 })
+  },
 })
 
 const securityHeadersMiddleware = createMiddleware().server(async ({ next }) => {

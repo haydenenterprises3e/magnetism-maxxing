@@ -7,7 +7,6 @@
  * (Both come straight from the lesson's URL.)
  */
 export const LESSON_VERSIONS: Record<string, number> = {
-  'TRACK__LESSON': 2,
   // 'track-slug__lesson-slug': 2,
 }
 
