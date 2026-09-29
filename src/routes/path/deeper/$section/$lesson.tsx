@@ -7,6 +7,7 @@ import { deeperKey, findDeeperLesson, isDeeperRankUnlocked } from '../../../../l
 import { computeOverallRank } from '../../../../lib/pathData'
 import { requireAnyPurchase } from '../../../../lib/session'
 import { getProgress, markLessonComplete } from '../../../../server/progress'
+import { getDeeperText } from '../../../../server/lessonText'
 
 const ASCENDING_PRODUCT_ID = 'prod_JYWg9jHMiYBQE'
 const COMPANY_ID = 'biz_jdcD3rL9FLYsxy'
@@ -42,6 +43,9 @@ export const Route = createFileRoute('/path/deeper/$section/$lesson')({
       throw redirect({ href: '/path/ascending#deeper-knowledge' })
     }
 
+    const text = await getDeeperText({ data: { section: params.section, lesson: params.lesson } })
+    if (!text.ok) throw redirect({ href: '/path/ascending#deeper-knowledge' })
+
     const key = deeperKey(found.section.slug, found.module.slug)
     return {
       section: {
@@ -49,7 +53,7 @@ export const Route = createFileRoute('/path/deeper/$section/$lesson')({
         title: found.section.title,
         slug: found.section.slug,
       },
-      module: found.module,
+      module: { ...found.module, content: text.content },
       key,
       isDone: completed.has(key),
     }

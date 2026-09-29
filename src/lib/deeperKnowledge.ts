@@ -1,7 +1,3 @@
-import { ESOTERIC_PERCEPTION_BODIES } from './deeperContent/esotericPerception'
-import { HIDDEN_HISTORY_BODIES } from './deeperContent/hiddenHistory'
-import { MODERN_SYSTEMS_BODIES } from './deeperContent/modernSystems'
-import { UNIVERSAL_LAW_BODIES } from './deeperContent/universalLaw'
 import type { Rank } from './pathData'
 
 export type DeeperRank = 'B' | 'A' | 'S'
@@ -69,10 +65,10 @@ ${body.trim()}`,
 function buildSection(
   meta: Omit<DeeperSection, 'modules'>,
   names: string[],
-  bodies: string[],
+  bodies: string[] = [],
 ): DeeperSection {
-  if (names.length !== 15 || bodies.length !== 15) {
-    throw new Error(`Deeper Knowledge section "${meta.slug}" must have 15 names and 15 bodies`)
+  if (names.length !== 15) {
+    throw new Error(`Deeper Knowledge section "${meta.slug}" must have 15 names`)
   }
   return {
     ...meta,
@@ -133,7 +129,7 @@ export const DEEPER_SECTIONS: DeeperSection[] = [
     "Vatican archive claims: what's known, what's speculation",
     'Alternative timeline theories',
     'Building your own hidden-history research method',
-  ], HIDDEN_HISTORY_BODIES),
+  ]),
   buildSection(ESOTERIC_PERCEPTION_META, [
     "The third eye: tradition, practice, and what's unverified",
     'Remote viewing: origins and the declassified government programs',
@@ -150,7 +146,7 @@ export const DEEPER_SECTIONS: DeeperSection[] = [
     'Kundalini: tradition and controversy',
     'Psychic development practices people actually use',
     'Building your own perception practice',
-  ], ESOTERIC_PERCEPTION_BODIES),
+  ]),
   buildSection(UNIVERSAL_LAW_META, [
     'The akashic records: origin and claims',
     'Karmic cycles across traditions',
@@ -167,7 +163,7 @@ export const DEEPER_SECTIONS: DeeperSection[] = [
     'The observer effect: what physics says, what pop culture added',
     'Rituals: why they work psychologically, regardless of belief',
     'Building your own belief framework, examined honestly',
-  ], UNIVERSAL_LAW_BODIES),
+  ]),
   buildSection(MODERN_SYSTEMS_META, [
     'Media literacy: how narratives are actually shaped',
     'The attention economy: who profits from your focus',
@@ -184,7 +180,7 @@ export const DEEPER_SECTIONS: DeeperSection[] = [
     'Reading between the lines of official statements',
     'Building resilience against manipulation',
     'Becoming an independent thinker',
-  ], MODERN_SYSTEMS_BODIES),
+  ]),
 ]
 
 export const DEEPER_MODULE_COUNT = DEEPER_SECTIONS.reduce((n, s) => n + s.modules.length, 0)

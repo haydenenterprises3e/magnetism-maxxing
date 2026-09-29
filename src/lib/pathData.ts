@@ -49,7 +49,6 @@ function slugify(name: string): string {
  * content, so the track is part of the key. Empty until filled in. Stored as
  * markdown — rendered with react-markdown on the module page.
  */
-import { LESSON_CONTENT } from './lessonContent'
 
 type LessonSpec = { name: string; rank: Rank; tier: Tier }
 
@@ -62,7 +61,7 @@ function buildLessons(trackSlug: string, specs: LessonSpec[]): Lesson[] {
       rank,
       tier,
       isTest: name.startsWith('Test:'),
-      content: LESSON_CONTENT[`${trackSlug}__${slug}`] ?? '',
+      content: '',
     }
   })
 }

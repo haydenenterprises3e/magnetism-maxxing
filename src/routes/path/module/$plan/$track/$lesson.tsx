@@ -8,6 +8,7 @@ import { findLesson, isRankUnlocked, lessonKey } from '../../../../../lib/pathDa
 import { parseQuiz } from '../../../../../lib/quizParser'
 import { requireAnyPurchase } from '../../../../../lib/session'
 import { getProgress, markLessonComplete } from '../../../../../server/progress'
+import { getModuleText } from '../../../../../server/lessonText'
 
 const STARTER_PRODUCT_ID = 'prod_gLMGkps62VudF'
 const ASCENDING_PRODUCT_ID = 'prod_JYWg9jHMiYBQE'
@@ -61,7 +62,15 @@ export const Route = createFileRoute('/path/module/$plan/$track/$lesson')({
     }
 
     const key = lessonKey(found.track.slug, found.lesson.slug)
-    return { track: found.track, lesson: found.lesson, plan: params.plan, key, isDone: completed.has(key) }
+    const text = await getModuleText({ data: { plan: params.plan, track: params.track, lesson: params.lesson } })
+    if (!text.ok) throw redirect({ href: `/path/${params.plan}` })
+    return {
+      track: found.track,
+      lesson: { ...found.lesson, content: text.content },
+      plan: params.plan,
+      key,
+      isDone: completed.has(key),
+    }
   },
   component: ModulePage,
 })
