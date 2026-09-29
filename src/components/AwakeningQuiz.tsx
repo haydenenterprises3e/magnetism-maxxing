@@ -220,9 +220,9 @@ export function AwakeningQuiz({ open, onClose }: { open: boolean; onClose: () =>
         {!onQuestionStep && !submitted && (
           <form onSubmit={submitEmail}>
             <div className="section-eyebrow">FINAL STEP</div>
-            <h3 className="quiz-question-title">Where should we send your path?</h3>
+            <h3 className="quiz-question-title">Unlock your results</h3>
             <p className="quiz-question-sub">
-              We'll match your answers to a track and rank recommendation — no spam, just your results.
+              Enter your email to see your recommended track and rank. We store your email and quiz answers with our platform provider, Whop, and may contact you about the program. See our <a href="/privacy">Privacy Policy</a>.
             </p>
             <div className="quiz-email-row">
               <input

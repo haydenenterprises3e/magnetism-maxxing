@@ -15,10 +15,10 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Magnetism Maxxing — The Awakening Path',
+        title: 'Magnetism Maxxing: Increase Magnetism | H3E Community',
       },
       { property: 'og:type', content: 'website' },
-      { property: 'og:title', content: 'Magnetism Maxxing — The Awakening Path' },
+      { property: 'og:title', content: 'Magnetism Maxxing: Increase Magnetism | H3E Community' },
       { property: 'og:description', content: 'A structured leveling system for building presence, confidence, and discipline.' },
       { name: 'twitter:card', content: 'summary' },
     ],
@@ -32,6 +32,16 @@ export const Route = createRootRoute({
       { rel: 'apple-touch-icon', href: '/favicon-180.png' },
     ],
     scripts: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Magnetism Maxxing',
+          alternateName: ['magnetism-maxxing', 'H3E', 'H3E Community', 'H3VENCE', 'Ascending Maxxing', 'The Awakening Path'],
+          url: 'https://magnetism-maxxing.whop.site/',
+        }),
+      },
       {
         src: 'https://www.googletagmanager.com/gtag/js?id=G-2K5VDJ93FQ',
         async: true,

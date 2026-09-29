@@ -9,11 +9,11 @@ import { ScrollReveal } from '../components/ScrollReveal'
 export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
-      { title: 'Magnetism Maxxing — The Awakening Path' },
+      { title: 'Magnetism Maxxing: Increase Magnetism | H3E Community' },
       {
         name: 'description',
         content:
-          'A structured leveling system for building presence, confidence, and discipline. Train mind, body, and income together, one rank at a time. Ages 18+.',
+          'Magnetism Maxxing by H3E: a leveling system to increase magnetism, presence, confidence and discipline. Join the H3E community. Ages 18+.',
       },
     ],
   }),

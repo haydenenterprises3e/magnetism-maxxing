@@ -34,6 +34,7 @@ const sections: Section[] = [
         "Library activity: your progress (modules completed, rank) and anything you submit, such as messages, posts, and trial submissions.",
         "Technical data: IP address, browser type, and basic request data collected automatically by our hosting provider for security and reliability.",
         "Messages to us: anything you send to our contact email, including your email address.",
+      "Quiz responses: if you complete the quiz on our home page, we collect your email address and your answers (including goals, interests and age). This is sent to our platform provider, Whop, and used to recommend a plan and to contact you about the program.",
       ],
       "We don't ask for sensitive information (such as health details). Please don't post it. Anything you choose to post in the library may be visible to other members.",
     ],
