@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
 
-import { companyAccessLevel, currentUser } from '../lib/session'
+import { companyAccessLevel, currentUser, requireAnyPurchase } from '../lib/session'
 
 const COMPANY_ID = 'biz_jdcD3rL9FLYsxy'
 
@@ -183,6 +183,17 @@ function enforceRateLimit(userId: string, maxPerWindow = 5, windowMs = 60_000) {
   recentSubmissions.set(userId, recent)
 }
 
+const COMMUNITY_PRODUCT_ID = 'prod_JYWg9jHMiYBQE'
+
+/** True for Ascending buyers and company admins; false for everyone else. */
+async function hasCommunityAccess(): Promise<boolean> {
+  const user = await currentUser()
+  if (!user) return false
+  if ((await companyAccessLevel(user.sub, COMPANY_ID)) === 'admin') return true
+  const guard = await requireAnyPurchase([COMMUNITY_PRODUCT_ID], COMPANY_ID)
+  return guard.ok
+}
+
 async function requireAdmin() {
   const user = await currentUser()
   if (!user) throw new Error('Not signed in')
@@ -230,6 +241,7 @@ export const sendDirectMessage = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     const user = await currentUser()
     if (!user) throw new Error('Not signed in')
+    if (!(await hasCommunityAccess())) throw new Error('Not authorized')
     enforceRateLimit(user.sub)
 
     const id = crypto.randomUUID()
@@ -266,6 +278,7 @@ export const submitGroupMessage = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     const user = await currentUser()
     if (!user) throw new Error('Not signed in')
+    if (!(await hasCommunityAccess())) throw new Error('Not authorized')
     enforceRateLimit(user.sub)
 
     const id = crypto.randomUUID()
@@ -332,6 +345,7 @@ export const postAdminMessage = createServerFn({ method: 'POST' })
 export const listApprovedMessages = createServerFn({ method: 'GET' }).handler(async () => {
   const user = await currentUser()
   if (!user) return []
+  if (!(await hasCommunityAccess())) return []
   const messages = await cachedRead('approved-messages', () => listParsed<GroupMessage>('approved:'))
   return messages.sort((a, b) => b.createdAt - a.createdAt)
 })
@@ -356,6 +370,7 @@ export const postAnnouncement = createServerFn({ method: 'POST' })
 export const listAnnouncements = createServerFn({ method: 'GET' }).handler(async () => {
   const user = await currentUser()
   if (!user) return []
+  if (!(await hasCommunityAccess())) return []
   const messages = await cachedRead('announcements', () => listParsed<Announcement>('announcement:'))
   return messages.sort((a, b) => b.createdAt - a.createdAt)
 })
@@ -366,6 +381,7 @@ export const submitTrial = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     const user = await currentUser()
     if (!user) throw new Error('Not signed in')
+    if (!(await hasCommunityAccess())) throw new Error('Not authorized')
     enforceRateLimit(user.sub)
 
     const id = crypto.randomUUID()
