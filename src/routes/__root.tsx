@@ -38,7 +38,7 @@ export const Route = createRootRoute({
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           name: 'Magnetism Maxxing',
-          alternateName: ['magnetism-maxxing', 'H3E', 'H3E Community', 'H3VENCE', 'Ascending Maxxing', 'The Awakening Path'],
+          alternateName: ['magnetism-maxxing', 'H3E', 'H3E Community', 'Ascending Maxxing', 'The Awakening Path'],
           url: 'https://magnetism-maxxing.whop.site/',
         }),
       },
