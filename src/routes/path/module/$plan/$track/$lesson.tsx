@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import { QuizRunner } from '../../../../../components/QuizRunner'
 import { findLesson, isRankUnlocked, lessonKey } from '../../../../../lib/pathData'
 import { parseQuiz } from '../../../../../lib/quizParser'
+import { completionState } from '../../../../../lib/lessonVersions'
 import { requireAnyPurchase } from '../../../../../lib/session'
 import { getProgress, markLessonComplete } from '../../../../../server/progress'
 import { getModuleText } from '../../../../../server/lessonText'
@@ -69,16 +70,18 @@ export const Route = createFileRoute('/path/module/$plan/$track/$lesson')({
       lesson: { ...found.lesson, content: text.content },
       plan: params.plan,
       key,
-      isDone: completed.has(key),
+      isDone: completionState(completed, key) === 'current',
+      isUpdated: completionState(completed, key) === 'updated',
     }
   },
   component: ModulePage,
 })
 
 function ModulePage() {
-  const { track, lesson, plan, key, isDone: initialDone } = Route.useLoaderData()
+  const { track, lesson, plan, key, isDone: initialDone, isUpdated: initialUpdated } = Route.useLoaderData()
   const backHref = `/path/${plan}`
   const [isDone, setIsDone] = useState(initialDone)
+  const [isUpdated, setIsUpdated] = useState(initialUpdated)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
@@ -94,7 +97,9 @@ function ModulePage() {
     try {
       const result = await markLessonComplete({ data: { key } })
       if (result.signedIn) {
-        setIsDone(result.completed.includes(key))
+        const st = completionState(new Set(result.completed), key)
+        setIsDone(st === 'current')
+        setIsUpdated(st === 'updated')
         window.whop?.track('module:completed', { track: track.slug, lesson: lesson.slug, rank: lesson.rank })
       }
     } finally {
@@ -125,7 +130,7 @@ function ModulePage() {
           {lesson.isTest && <span className="track-tag module-test-tag">TEST</span>}
         </div>
 
-        <div className="module-body">
+        <div className={`module-body${isDone ? ' body-gold' : isUpdated ? ' body-purple' : ''}`}>
           {quiz ? (
             <>
               {quiz.intro && <ReactMarkdown>{quiz.intro}</ReactMarkdown>}
@@ -148,7 +153,7 @@ function ModulePage() {
             </span>
           ) : (
             <button type="button" className="btn-primary quiz-submit" onClick={handleComplete} disabled={saving}>
-              {saving ? 'Saving…' : 'Mark Complete'}
+              {saving ? 'Saving…' : isUpdated ? 'Updated · Mark Complete Again' : 'Mark Complete'}
             </button>
           )}
           <a href={backHref} className="btn-ghost quiz-submit" style={{ display: 'inline-block' }}>

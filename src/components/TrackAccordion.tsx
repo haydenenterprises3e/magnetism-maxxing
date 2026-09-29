@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { isRankUnlocked, lessonKey, type TrackData } from '../lib/pathData'
+import { completionState } from '../lib/lessonVersions'
 
 export function TrackAccordion({
   index,
@@ -70,17 +71,19 @@ export function TrackAccordion({
           const tierLocked = lesson.tier === 'ascending' && planSlug !== 'ascending'
           const rankUnlocked = isRankUnlocked(track, lesson.rank, completed, hasAscending)
           const locked = tierLocked || !rankUnlocked
-          const isDone = completed.has(lessonKey(track.slug, lesson.slug))
+          const state = completionState(completed, lessonKey(track.slug, lesson.slug))
+          const isDone = state === 'current'
+          const isUpdated = state === 'updated'
 
           const icon = (
-            <div className={`lesson-icon ${locked ? 'locked' : isDone ? 'done' : 'available'}`}>
-              {locked ? '🔒' : isDone ? '✓' : '›'}
+            <div className={`lesson-icon ${locked ? 'locked' : isUpdated ? 'updated' : isDone ? 'done' : 'available'}`}>
+              {locked ? '🔒' : isUpdated ? '↻' : isDone ? '✓' : '›'}
             </div>
           )
           const rankTag = <span className={`rank-tag rank-tag-${lesson.rank.toLowerCase()}`}>{lesson.rank}</span>
 
           return (
-            <div key={lesson.slug} className={`lesson-row${lesson.isTest ? ' test-row' : ''}`}>
+            <div key={lesson.slug} className={`lesson-row${lesson.isTest ? ' test-row' : ''}${!locked && isDone ? ' row-gold' : ''}${!locked && isUpdated ? ' row-purple' : ''}`}>
               {locked ? (
                 <div className="lesson-left">
                   {icon}

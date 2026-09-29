@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { deeperKey, isDeeperRankUnlocked, type DeeperSection } from '../lib/deeperKnowledge'
 import type { Rank } from '../lib/pathData'
+import { completionState } from '../lib/lessonVersions'
 
 export function DeeperAccordion({
   section,
@@ -42,18 +43,20 @@ export function DeeperAccordion({
       </div>
       <div className="lesson-list">
         {section.modules.map((mod, i) => {
-          const isDone = completed.has(deeperKey(section.slug, mod.slug))
+          const state = completionState(completed, deeperKey(section.slug, mod.slug))
+          const isDone = state === 'current'
+          const isUpdated = state === 'updated'
           const locked = !isDeeperRankUnlocked(mod.rank, overallRank)
           const num = String(i + 1).padStart(2, '0')
           const icon = (
-            <div className={`lesson-icon ${locked ? 'locked' : isDone ? 'done' : 'available'}`}>
-              {locked ? '🔒' : isDone ? '✓' : '›'}
+            <div className={`lesson-icon ${locked ? 'locked' : isUpdated ? 'updated' : isDone ? 'done' : 'available'}`}>
+              {locked ? '🔒' : isUpdated ? '↻' : isDone ? '✓' : '›'}
             </div>
           )
           const rankTag = <span className={`rank-tag rank-tag-${mod.rank.toLowerCase()}`}>{mod.rank}</span>
 
           return (
-            <div key={mod.slug} className="lesson-row">
+            <div key={mod.slug} className={`lesson-row${!locked && isDone ? ' row-gold' : ''}${!locked && isUpdated ? ' row-purple' : ''}`}>
               {locked ? (
                 <div className="lesson-left">
                   {icon}

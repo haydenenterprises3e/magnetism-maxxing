@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 
 import { deeperKey, findDeeperLesson, isDeeperRankUnlocked } from '../../../../lib/deeperKnowledge'
 import { computeOverallRank } from '../../../../lib/pathData'
+import { completionState } from '../../../../lib/lessonVersions'
 import { requireAnyPurchase } from '../../../../lib/session'
 import { getProgress, markLessonComplete } from '../../../../server/progress'
 import { getDeeperText } from '../../../../server/lessonText'
@@ -55,16 +56,18 @@ export const Route = createFileRoute('/path/deeper/$section/$lesson')({
       },
       module: { ...found.module, content: text.content },
       key,
-      isDone: completed.has(key),
+      isDone: completionState(completed, key) === 'current',
+      isUpdated: completionState(completed, key) === 'updated',
     }
   },
   component: DeeperModulePage,
 })
 
 function DeeperModulePage() {
-  const { section, module, key, isDone: initialDone } = Route.useLoaderData()
+  const { section, module, key, isDone: initialDone, isUpdated: initialUpdated } = Route.useLoaderData()
   const backHref = '/path/ascending#deeper-knowledge'
   const [isDone, setIsDone] = useState(initialDone)
+  const [isUpdated, setIsUpdated] = useState(initialUpdated)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
@@ -77,7 +80,9 @@ function DeeperModulePage() {
     try {
       const result = await markLessonComplete({ data: { key } })
       if (result.signedIn) {
-        setIsDone(result.completed.includes(key))
+        const st = completionState(new Set(result.completed), key)
+        setIsDone(st === 'current')
+        setIsUpdated(st === 'updated')
         window.whop?.track('module:completed', { track: `deeper-${section.slug}`, lesson: module.slug })
       }
     } finally {
@@ -104,7 +109,7 @@ function DeeperModulePage() {
           <span className="tier-tag">ASCENDING</span>
         </div>
 
-        <div className="module-body">
+        <div className={`module-body${isDone ? ' body-gold' : isUpdated ? ' body-purple' : ''}`}>
           <ReactMarkdown>{module.content}</ReactMarkdown>
         </div>
 
@@ -115,7 +120,7 @@ function DeeperModulePage() {
             </span>
           ) : (
             <button type="button" className="btn-primary quiz-submit" onClick={handleComplete} disabled={saving}>
-              {saving ? 'Saving…' : 'Mark Complete'}
+              {saving ? 'Saving…' : isUpdated ? 'Updated · Mark Complete Again' : 'Mark Complete'}
             </button>
           )}
           <a href={backHref} className="btn-ghost quiz-submit" style={{ display: 'inline-block' }}>

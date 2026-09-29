@@ -4,6 +4,7 @@ import { getCookie, setCookie } from '@tanstack/react-start/server'
 import { ASCENDING_PRODUCT_ID, findPaidMembership } from '../lib/membership'
 import { currentUser, hasActiveProductAccess } from '../lib/session'
 import { serverWhop } from '../lib/whopClient'
+import { lessonVersion } from '../lib/lessonVersions'
 
 const DONE_COOKIE = 'hp_done'
 const DONE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365
@@ -43,6 +44,8 @@ export const markLessonComplete = createServerFn({ method: 'POST' })
     const hasAscending = await hasActiveProductAccess(user.sub, ASCENDING_PRODUCT_ID)
     const { keys, membershipId, metadata } = await readCompletedKeys(user.sub)
     keys.add(data.key)
+    const version = lessonVersion(data.key)
+    if (version > 1) keys.add(`${data.key}@v${version}`)
     const completed = [...keys]
 
     if (membershipId) {

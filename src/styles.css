@@ -615,3 +615,11 @@ nav,
 @media (max-width: 640px) {
   .path-page .sticky-header { margin: 0 -5vw 30px; padding: 14px 5vw; }
 }
+
+/* Completion glows: gold = completed, purple = completed but updated since */
+.path-page .lesson-row.row-gold { background: rgba(232,184,109,0.07); box-shadow: inset 0 0 22px rgba(232,184,109,0.2), 0 0 14px rgba(232,184,109,0.16); }
+.path-page .lesson-row.row-purple { background: rgba(169,112,255,0.08); box-shadow: inset 0 0 22px rgba(169,112,255,0.24), 0 0 14px rgba(169,112,255,0.2); }
+.path-page .row-gold .lesson-icon.done { background: #e8b86d; color: #1a1206; }
+.path-page .lesson-icon.updated { background: #a970ff; color: #fff; }
+.path-page .module-body.body-gold { border: 1px solid rgba(232,184,109,0.4); border-radius: 14px; padding: 28px; box-shadow: 0 0 30px rgba(232,184,109,0.16), inset 0 0 26px rgba(232,184,109,0.07); }
+.path-page .module-body.body-purple { border: 1px solid rgba(169,112,255,0.45); border-radius: 14px; padding: 28px; box-shadow: 0 0 30px rgba(169,112,255,0.22), inset 0 0 26px rgba(169,112,255,0.09); }
