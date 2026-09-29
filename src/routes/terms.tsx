@@ -86,7 +86,7 @@ function TermsPage() {
 
       <h2 style={styles.h2}>Refund Requests & Questions</h2>
       <p style={styles.p}>
-        For refund requests or account questions, message us at <strong>haydenenterprises3e@gmail.com</strong>.
+        For refund requests or account questions, message us at <strong>H3Ecommunitytakeover@gmail.com</strong>.
       </p>
     </div>
   )

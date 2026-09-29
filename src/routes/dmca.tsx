@@ -46,7 +46,7 @@ function DmcaPage() {
       <h2 style={styles.h2}>How to Submit a Takedown Request</h2>
       <p style={styles.p}>
         If you believe content on this site infringes your copyright, email{' '}
-        <strong>haydenenterprises3e@gmail.com</strong> with the subject line "Copyright Complaint" and
+        <strong>H3Ecommunitytakeover@gmail.com</strong> with the subject line "Copyright Complaint" and
         include:
       </p>
       <ul style={styles.ul}>
@@ -79,7 +79,7 @@ function DmcaPage() {
 
       <h2 style={styles.h2}>Contact</h2>
       <p style={styles.p}>
-        For copyright notices only, email <strong>haydenenterprises3e@gmail.com</strong>. For general privacy
+        For copyright notices only, email <strong>H3Ecommunitytakeover@gmail.com</strong>. For general privacy
         or data questions, see our{' '}
         <Link to="/privacy" style={{ color: '#c9a8ff' }}>Privacy Policy</Link>.
       </p>

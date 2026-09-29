@@ -68,7 +68,7 @@ function PrivacyPage() {
       <h2 style={styles.h2}>Your Rights & Contact</h2>
       <p style={styles.p}>
         You can request access to, correction of, or deletion of your data at any time. For data requests or
-        privacy questions only, contact <strong>haydenenterprises3e@gmail.com</strong>.
+        privacy questions only, contact <strong>H3Ecommunitytakeover@gmail.com</strong>.
       </p>
 
       <h2 style={styles.h2}>Changes</h2>
