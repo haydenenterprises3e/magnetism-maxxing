@@ -79,7 +79,7 @@ const sections: Section[] = [
   {
     h: 'Cookies',
     body: [
-      "We use a session cookie only, to keep you signed in. We don't use advertising or tracking cookies.",
+      "We use a session cookie to keep you signed in and a cookie that remembers which lessons you have completed. We also use Google Analytics to understand how the site is used; it sets its own cookies and collects anonymized usage data such as pages viewed, device type and approximate location. We don't use advertising cookies. You can block Google Analytics with a browser extension or your browser's privacy settings; see Google's opt-out tools at tools.google.com/dlpage/gaoptout.",
     ],
   },
   {

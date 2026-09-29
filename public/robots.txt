@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /path/
+
+Sitemap: https://magnetism-maxxing.whop.site/sitemap.xml

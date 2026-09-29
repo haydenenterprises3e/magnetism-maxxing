@@ -17,6 +17,10 @@ export const Route = createRootRoute({
       {
         title: 'Magnetism Maxxing — The Awakening Path',
       },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: 'Magnetism Maxxing — The Awakening Path' },
+      { property: 'og:description', content: 'A structured leveling system for building presence, confidence, and discipline.' },
+      { name: 'twitter:card', content: 'summary' },
     ],
     links: [
       {

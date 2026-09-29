@@ -13,7 +13,7 @@ export const Route = createFileRoute('/')({
       {
         name: 'description',
         content:
-          'Magnetism Maxxing is a structured leveling system for building real presence, confidence, and discipline — training mind, body, and income together, one rank at a time. Ages 18+. Cancel anytime.',
+          'A structured leveling system for building presence, confidence, and discipline. Train mind, body, and income together, one rank at a time. Ages 18+.',
       },
     ],
   }),
