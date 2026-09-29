@@ -52,7 +52,7 @@ function slugify(name: string): string {
 
 type LessonSpec = { name: string; rank: Rank; tier: Tier }
 
-function buildLessons(trackSlug: string, specs: LessonSpec[]): Lesson[] {
+function buildLessons(_trackSlug: string, specs: LessonSpec[]): Lesson[] {
   return specs.map(({ name, rank, tier }) => {
     const slug = slugify(name)
     return {
